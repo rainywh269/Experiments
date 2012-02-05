@@ -1,0 +1,118 @@
+*{margin:0;padding:0;font-family: Helvetica LT Std;}
+#leftArea
+{
+    background: none repeat scroll 0 0 #B6B2B2;
+    float: left;
+    height: 302px;
+    margin: 5px 5px 0;
+    text-align: center;
+    padding-top:5px;
+    width: 186px;
+}
+#wrapper
+{
+    top:200px;
+    position:relative;
+    margin: 0 auto;
+    width: 960px;
+}
+#scrollMagic
+{
+    float: left;
+    margin-top:5px;
+    height:312px;
+    overflow:hidden;
+}
+.clear
+{
+    clear:both;
+}
+#ulist
+{
+    position:relative; 
+}
+ul,li
+{
+    list-style:None;
+}
+#header *
+{
+    display:inline;
+}
+li
+{
+    margin-bottom:5px;
+}
+.leftIcon
+{
+    display:block;
+    height:71px;
+    background:#c9c9c9;
+    width:640px;
+    padding:14px;
+}
+.inlineMiddle
+{
+    line-height:74px;
+    float:left;
+}
+.leftIconImage
+{
+    display:inline-block;
+    vertical-align:middle;
+}
+.rightInfoArea
+{
+    float:left;
+    width:550px;
+    margin:3px 0 0 9px;
+}
+.headings
+{
+    border-bottom: solid 2px #4F868D;
+    margin:0;
+    padding-bottom:3px;
+}
+.headings div
+{
+    overflow: hidden;
+    white-space: nowrap;
+}
+.rightTopFirst
+{
+    width:280px;
+    font-size: 20pt;
+    float:left;
+}
+.rightTopSecond
+{
+    font-size: 14pt;
+    float:right;
+    top:10px;
+    position:relative;
+}
+.title
+{
+    font-size: 24pt;
+    width:380px;
+    float:left;
+    margin:0;
+}
+.time
+{
+    float:right;
+    font-size:18px;
+}
+.showArea
+{
+    overflow: hidden;
+    white-space: nowrap;
+}
+.artist .leftIcon
+{
+    height:auto;
+}
+.artist .title
+{
+    font-size:16pt;
+}

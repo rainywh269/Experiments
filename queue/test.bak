@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+'''
+test.py
+Author: WooParadog
+Email:  Guohaochuan@gmail.com
+
+Created on
+2011-12-29
+'''
+
+import Queue
+import os
+
+q = Queue.Queue()
+def word():
+    print q.get()
+
+def main():
+    for x in range(100):
+        print x
+        q.put(x)
+    os.fork()
+    os.fork()
+    os.fork()
+    word()
+
+    
+    
+
+if __name__ == '__main__':
+    main()

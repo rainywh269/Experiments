@@ -1,0 +1,11 @@
+{% extends "musicshare/base.html" %}
+
+{% block title %}User{% endblock %}
+
+{% block content %}
+<form action="/user/{{form.instance.pk}}/edit" method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+{{form}}
+<input type="submit" value="OK" />
+</form>
+{% endblock %}

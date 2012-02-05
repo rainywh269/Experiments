@@ -1,0 +1,43 @@
+itertools:
+
+[{'data': ['hello', 'hello4', 'hello5'], 'type': 'a'}, {'data': ['hello1', 'hello2', 'hello3', 'hello6', 'hello7'], 'type': 'b'}]
+         6 function calls in 0.000 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.000    0.000 <string>:1(<module>)
+        1    0.000    0.000    0.000    0.000 testDictSetdefault.py:28(group1)
+        2    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 {method 'sort' of 'list' objects}
+---------------------------------------
+collections:
+
+[{'data': ['hello', 'hello4', 'hello5'], 'type': 'a'}, {'data': ['hello1', 'hello2', 'hello3', 'hello6', 'hello7'], 'type': 'b'}]
+         12 function calls in 0.000 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.000    0.000 <string>:1(<module>)
+        1    0.000    0.000    0.000    0.000 testDictSetdefault.py:35(group2)
+        8    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+--------------------------------------
+setdefault()
+
+{'a': ['hello', 'hello4', 'hello5'], 'b': ['hello1', 'hello2', 'hello3', 'hello6', 'hello7']}
+         19 function calls in 0.000 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.000    0.000 <string>:1(<module>)
+        1    0.000    0.000    0.000    0.000 testDictSetdefault.py:41(group3)
+        8    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        8    0.000    0.000    0.000    0.000 {method 'setdefault' of 'dict' objects}
+
+
