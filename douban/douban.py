@@ -20,7 +20,6 @@ def str2int(txt):
     val = 0
     multiplier = 10
     float_multiplier = 1
-    negative_pos = 0
     for i in txt:
         if i not in str_dict and i not in sign:
             raise
@@ -32,9 +31,9 @@ def str2int(txt):
         if i in str_dict:
             endofsign = True
             val *= multiplier
-            val += str_dict[i]*(float_multiplier**negative_pos)
+            val += str_dict[i]*float_multiplier
             if endofpoiont:
-                negative_pos+=1
+                float_multiplier *=0.1
 
         if i == sign[2] :
             if endofpoiont:
@@ -43,7 +42,6 @@ def str2int(txt):
             val = float(val)
             multiplier = 1
             float_multiplier = 0.1
-            negative_pos = 1
             endofpoiont = True
 
     if not positive:
