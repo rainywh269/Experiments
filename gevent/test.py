@@ -12,6 +12,7 @@ Created on
 import gevent
 
 def main():
+    dd = range(199)
     jobs = [gevent.spawn(lambda x=x: x*2) for x in dd]
     gevent.joinall(jobs)
     for j in jobs:

@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
-_base.py
-Author: WooParadog
-Email:  Guohaochuan@gmail.com
-Created on
-2011-11-20
-'''
+
 from config import DATABASE_CONFIG
 from sqlbean.db.sqlstore import SqlStore
 from sqlbean.db.mc_connection import init_mc
