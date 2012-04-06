@@ -1,13 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
-server.py
-Author: WooParadog
-Email:  Guohaochuan@gmail.com
-
-Created on
-2012-01-24
-'''
 from gevent import monkey;
 monkey.patch_all()
 
