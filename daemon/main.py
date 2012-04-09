@@ -41,11 +41,14 @@ class PidFile(object):
                 raise
         os.remove(self.path)
 
+import os.path as path
+dira = path.dirname(path.abspath(__file__))
 def main():
-    print path.dirname(path.abspath(__file__))+'dfdf'
-    with daemon.DaemonContext(stdout=sys.stdout, pidfile=PidFile(path.dirname(path.abspath(__file__))+'dfdf')):
-        while True:
-            time.sleep(10)
+    print dira
+    with daemon.DaemonContext(stdout=sys.stdout, pidfile=PidFile(dira+'/'+'INFO')):
+        with open(dira+'/'+"LOG",'wa'):
+            while True:
+                time.sleep(10)
             print "100"
 
 if __name__ == '__main__':

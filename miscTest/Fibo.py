@@ -17,8 +17,8 @@ def fibonacci():
         a, b = b, a + b
 
 f = fibonacci()
-for x in range(10000):
-    print f.next(),  # 0 1 1 2 3 5 8 13 21 34 55 89 144
+for i in f:
+    print i
 
 #    
 #def fibo(n):
