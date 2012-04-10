@@ -1,7 +1,6 @@
 #include<iostream>
 #include<string>
 
-
 template <class Type>
 void print(Type str){
     std::cout<<str<<std::endl;

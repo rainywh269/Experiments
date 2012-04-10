@@ -2,7 +2,6 @@ package main
 
 import (
     "fmt"
-    "blackfriday"
 )
 type Author struct{
     id int
@@ -31,7 +30,6 @@ type C interface{
 
 func main(){
     var author=Author{id:1,name:"wooparadog"}
-
     var d = Note{
         Post:Post{
             id:1,
@@ -42,11 +40,10 @@ func main(){
         img:"img" }
 
     d.author.name = "testAuthor"
+    d.author.author()
 
     fmt.Println(d.title)
-    var ai C
-    ai = d.author
 }
 func (p Author) author(){
-    fmt.Print("author:" + p.name)
+    fmt.Println("author:" + p.name)
 }
