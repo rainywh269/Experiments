@@ -36,14 +36,17 @@ def get_session():
     return session
 
 if __name__ == '__main__':
-    #session = get_session2()
-    db = SqlSoup(engine)
-    for i in db.vote.all():
-        print i
-
-    #for i in session.query(Vote).all():
-    #    print dir(i)
+    session = get_session2()
+    import ipdb
+    ipdb.set_trace()
+    print dir(Vote.title)
+    #db = SqlSoup(engine)
+    #for i in db.vote.all():
     #    print i
+
+    for i in session.query(Vote).all():
+        print dir(i)
+        print i
 
     #v = Vote()
     #v.creator_id = 1
