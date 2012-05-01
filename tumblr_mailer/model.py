@@ -11,7 +11,7 @@ Created on
 
 import sqlite3
 import oauth2
-from configs import CONSUMER_KEY, CONSUMER_SECRET
+from configs import CONSUMER_KEY, CONSUMER_SECRET, DB_FILE
 from lxml import html
 import json
 
@@ -29,7 +29,7 @@ class Client(object):
         return content['response']['posts']
 
 class Post(object):
-    conn = sqlite3.connect("db.sqlite3")
+    conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
 
     @classmethod
@@ -56,8 +56,6 @@ class Post(object):
         self.id = post['id']
         self.url = post['post_url']
 
-        #self.text = html.fromstring(self.text)
-        #self.text = self.text.text_content().replace('====','\n========\n')
         return self
 
     def __init__(self, user_id=0):

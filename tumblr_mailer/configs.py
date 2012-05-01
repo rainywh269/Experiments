@@ -9,6 +9,11 @@ Created on
 2012-05-01
 '''
 
+from os import path
+current_path = path.dirname(path.abspath(__file__))
+DB_FILENAME = "db.sqlite3"
+DB_FILE = path.join(current_path, DB_FILENAME)
+
 SMTP = 'smtp.mailgun.org'
 SMTP_USERNAME = 'postmaster@wooparadog.mailgun.org'
 SMTP_PASSWORD = '2zcpxlnii6x0'
