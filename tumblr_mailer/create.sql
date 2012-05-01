@@ -7,3 +7,8 @@ CREATE TABLE posts(
     user_id int(3)
 );
 
+create table users(
+    id long,
+    name text,
+    email text
+);

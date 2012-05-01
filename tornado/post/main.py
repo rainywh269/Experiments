@@ -10,6 +10,7 @@ from mako.template import Template
 class Index(tornado.web.RequestHandler):
     def get(self):
         self.write(Template(text=open('index.html').read()).render())
+
     def post(self):
         x=self.get_argument('txt1')
         x+=self.get_argument('txt2')

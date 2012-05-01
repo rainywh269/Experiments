@@ -18,6 +18,18 @@ from email.Utils import COMMASPACE, formatdate
 from email import Encoders
 from datetime import date
 
+html_header = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>tumblr</title>
+</head>
+<body>
+	%s
+</body>
+</html>
+'''
+
 def send_mail(send_from, send_to, subject, text, attachment):
     assert type(send_to)==list
 
@@ -49,6 +61,7 @@ def main():
     #text = '\n\n---\n\n'.join(result)
     text = ''.join(result)
     text = text.encode('utf8')
+    text = html_header%text
     addr = ["guohaochuan@kindle.com", "guohaochuan@gmail.com"]#"rainywh269@gmail.com"]
     send_mail(SMTP_USERNAME, addr,'sddd', 'asdfasdf', text)
 

@@ -15,6 +15,7 @@ from configs import CONSUMER_KEY, CONSUMER_SECRET
 from lxml import html
 import json
 
+
 class Client(object):
     def __init__(self, oauth_token, oauth_token_secret):
         consumer = oauth2.Consumer(CONSUMER_KEY, CONSUMER_SECRET)
