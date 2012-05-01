@@ -16,6 +16,7 @@ from email.MIMEText import MIMEText
 import smtplib
 from email.Utils import COMMASPACE, formatdate
 from email import Encoders
+from datetime import date
 
 def send_mail(send_from, send_to, subject, text, attachment):
     assert type(send_to)==list
@@ -31,7 +32,8 @@ def send_mail(send_from, send_to, subject, text, attachment):
     part = MIMEBase('application', "octet-stream")
     part.set_payload(attachment)
     Encoders.encode_base64(part)
-    part.add_header('Content-Disposition', 'attachment; filename="tumblr.html"' )
+    part.add_header('Content-Disposition', 
+            'attachment; filename="%s.html"'% str(date.today()))
     msg.attach(part)
 
     smtp = smtplib.SMTP(SMTP)
@@ -44,9 +46,10 @@ def main():
     for i in Post.get_unmailed_posts():
         result.append(i.text)
         i.update_post_state()
-    text = '\n\n---\n\n'.join(result)
+    #text = '\n\n---\n\n'.join(result)
+    text = ''.join(result)
     text = text.encode('utf8')
-    addr = ["guohaochuan@kindle.com", "guohaochuan@gmail.com", ]#"rainywh269@gmail.com"]
+    addr = ["guohaochuan@kindle.com", "guohaochuan@gmail.com"]#"rainywh269@gmail.com"]
     send_mail(SMTP_USERNAME, addr,'sddd', 'asdfasdf', text)
 
 if __name__ == '__main__':

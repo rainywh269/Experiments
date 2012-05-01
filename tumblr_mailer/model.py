@@ -55,8 +55,8 @@ class Post(object):
         self.id = post['id']
         self.url = post['post_url']
 
-        self.text = html.fromstring(self.text)
-        self.text = self.text.text_content().replace('====','\n========\n')
+        #self.text = html.fromstring(self.text)
+        #self.text = self.text.text_content().replace('====','\n========\n')
         return self
 
     def __init__(self, user_id=0):
@@ -85,7 +85,7 @@ class Post(object):
 class TextPost(Post):
     def __init__(self,post):
         title = post['title'].strip() or "No Title"
-        self.text = title + '====' + post['body'] 
+        self.text = "<h1>%s</h1>"%title +  post['body'] 
         super(TextPost,self).from_post(post)
 
     @classmethod
@@ -98,7 +98,7 @@ class TextPost(Post):
 
 class QuotePost(Post):
     def __init__(self,post):
-        self.text = post['text']
+        self.text = "<h1>%s</h1>"%post['text']
         super(QuotePost,self).from_post(post)
 
 def post_factory(post):
