@@ -1,0 +1,39 @@
+# This is the root of an independent project
+project-root ;
+
+# Declares the following targets:
+#    
+#  1. an extension module called "getting_started1", which is
+#     built from "getting_started1.cpp". Built by default
+#
+#  2. A test target called my-test.test which runs
+#     test_getting_started1.py with the extension module above. Built
+#     when out-of date, but only if invoked by name or if the global
+#     "test" target is invoked.
+#
+#  3. A test target called my-test.run wihch runs the above test
+#     unconditionally. Built only when invoked by name.
+#
+# To see verbose test output, add "-sPYTHON_TEST_ARGS=-v" to the bjam
+# command-line before the first target.
+#
+
+# Include definitions needed for Python modules
+SEARCH on python.jam = $(BOOST_BUILD_PATH) ;
+include python.jam ;
+
+# Declare a Python extension called getting_started1
+extension getting_started1
+:  # sources
+   ../example/getting_started1.cpp
+  :  # requirements
+  
+     # link to the appropriate library for the build variant.
+    <release><find-library>boost_python
+    <debug><find-library>boost_python_debug
+    <debug-python><find-library>boost_python_pydebug
+  
+  # library path required for linking to boost_python shared lib. You
+  # may need to edit this for your installation
+    <library-path>../build/bin-stage
+  ;

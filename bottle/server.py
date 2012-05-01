@@ -12,24 +12,23 @@ app = Bottle()
 
 @app.get('/')
 def get():
-    yield "Hello"
-    sleep(3)
-    yield "WORLD"
-    sleep(1)
-    yield "YOU"
-    #return Template(filename='template/index.html').render()
+    #yield "Hello"
+    #sleep(3)
+    #yield "WORLD"
+    #sleep(1)
+    #yield "YOU"
+    return Template(filename='template/index.html').render()
 
 
 @app.post('/')
 def post():
-    pass
-    #data = request.files.f1
+    data = request.files.f1
     #response.set_cookie(main
-    #raw =  data.file.read()
-    #filename = path.join('media/',data.filename)
-    #with open(filename,'w') as f:
-    #    f.write(raw)
-    #return static_file(filename,root='.')
+    raw =  data.file.read()
+    filename = path.join('media/',data.filename)
+    with open(filename,'w') as f:
+        f.write(raw)
+    return static_file(filename,root='.')
 
 def main():
     run(app=app, server='gevent',reloader=True )

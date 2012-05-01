@@ -9,7 +9,7 @@ Created on
 2012-03-25
 '''
 import sys
-frsys.getsizeof(a)om itertools import izip
+from itertools import izip
 def main():
     b=10000000
     old_size = 0
