@@ -62,8 +62,8 @@ def main():
     text = ''.join(result)
     text = text.encode('utf8')
     text = html_header%text
-    addr = ["guohaochuan@kindle.com", "guohaochuan@gmail.com"]#"rainywh269@gmail.com"]
-    send_mail(SMTP_USERNAME, addr,'sddd', 'asdfasdf', text)
+    addr = ["guohaochuan@kindle.com", "guohaochuan@gmail.com","rainywh269@kindle.com"]
+    send_mail(SMTP_USERNAME, addr,'tumblr', 'for you, love, every day', text)
 
 if __name__ == '__main__':
     main()

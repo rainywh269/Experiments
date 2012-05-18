@@ -78,12 +78,9 @@ class Post(object):
     def save(self):
         self._insert(self.text, "text")
 
-    def text(self):
-        pass
-
 class TextPost(Post):
     def __init__(self,post):
-        title = post['title'].strip() or "No Title"
+        title = post['title'] and post['title'].strip() or "No Title"
         self.text = "<h1>%s</h1>"%title +  post['body'] 
         super(TextPost,self).from_post(post)
 
