@@ -24,14 +24,13 @@ class non(RequestHandler):
         
 def main():
     """docstring for main"""
-    print "@"
-    #tornado.process.fork_processes(0)
-    #sokets = tornado.netutil.bind_sockets(9993)
+    sokets = tornado.netutil.bind_sockets(8000)
+    tornado.process.fork_processes(0)
     application = tornado.web.Application([
-        ('',non)])
+        ('/',non)])
     http_server = httpserver.HTTPServer(application)
-    http_server.listen(9993)
-    #http_server.add_sockets(sokets)
+    #http_server.listen(9993)
+    http_server.add_sockets(sokets)
     ioloop.IOLoop.instance().start()
 
 #application = tornado.wsgi.WSGIApplication([
