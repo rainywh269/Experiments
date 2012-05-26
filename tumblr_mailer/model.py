@@ -15,6 +15,9 @@ from configs import CONSUMER_KEY, CONSUMER_SECRET, DB_FILE
 from lxml import html
 import json
 
+STATE_UNSEND = 0
+STATE_SEND = 1
+STATE_NOT_SUIT = 2
 
 class Client(object):
     def __init__(self, oauth_token, oauth_token_secret):
@@ -35,7 +38,7 @@ class Post(object):
     @classmethod
     def get_unmailed_posts(cls, user_id=0):
         cls.cursor.execute("select * from posts "
-                "where user_id=? and state = 0", (user_id,))
+                "where user_id=? and state = ?", (user_id, STATE_UNSEND))
         for i in cls.cursor.fetchall():
             yield Post(user_id).from_db(i)
 
@@ -50,11 +53,12 @@ class Post(object):
         self.id, self.url, self.text, self.state, self.type, self.user_id = post
         return self
 
-    def from_post(self, post, user_id=0):
+    def from_post(self, post, user_id=0, savable=True):
         self.user_id = user_id
         self.post = post
         self.id = post['id']
         self.url = post['post_url']
+        self.savable = savable
 
         return self
 
@@ -62,13 +66,13 @@ class Post(object):
         pass
 
     def update_post_state(self):
-        self.cursor.execute("update posts set state=1 where id=?",(self.id,))
+        self.cursor.execute("update posts set state=? where id=?",(STATE_SEND, self.id,))
         self.commit()
 
     def commit(self):
         self.conn.commit()
 
-    def _insert(self, text, type, state=0):
+    def _insert(self, text, type, state=STATE_UNSEND):
         self.cursor.execute("insert into posts "
                 "(id, url, text, state, type, user_id) "
                 "values (?,?,?,?,?,?)", 
@@ -76,7 +80,11 @@ class Post(object):
         self.commit()
 
     def save(self):
-        self._insert(self.text, "text")
+        if self.savable:
+            state = STATE_UNSEND
+        else:
+            state = STATE_NOT_SUIT
+        self._insert(self.text, "text", state=state)
 
 class TextPost(Post):
     def __init__(self,post):
@@ -97,11 +105,18 @@ class QuotePost(Post):
         self.text = "<h1>%s</h1>"%post['text']
         super(QuotePost,self).from_post(post)
 
+class NotPost(Post):
+    def __init__(self, post):
+        self.text = "NOT"
+        super(NotPost,self).from_post(post, savable=False)
+
 def post_factory(post):
     if post['type'] == 'quote':
         return QuotePost(post)
     elif post['type'] == 'text':
         return TextPost(post)
+    else:
+        return NotPost(post)
 
 if __name__ == '__main__':
     result = []
