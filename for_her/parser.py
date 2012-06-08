@@ -22,7 +22,11 @@ def main():
         with open(file_path) as f:
             a = defaultdict(str)
             content = f.read()
-            content = content.decode('BIG5')
+            try:
+                content = content.decode('BIG5', 'ignore')
+            except:
+                print file_path
+                raise
 
             parser = etree.HTML(content)
             it = parser.xpath('//body/table')[2]
@@ -55,7 +59,7 @@ def main():
 
             a['title'] = ftoj(title).replace(":","：".decode("utf8"))
             a['alias'] = ftoj(alias).replace(":","：".decode("utf8"))
-            a['content'] = ftoj(ps).replace(":","：".decode("utf8"))
+            a['content'] = ftoj(ps).replace(":","：".decode("utf8")).replace("\n","").replace("\r",'')
 
             cats[cat].append(a)
             if cat == 'None':

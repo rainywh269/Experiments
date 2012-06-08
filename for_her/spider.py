@@ -21,7 +21,7 @@ headers = {
         "User-Agent":"Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1155.2 Safari/537.1",
         }
 def main():
-    for i in range(1762 , 2504):
+    for i in range(1744 , 2504):
         url = url_h%i
         print url
         r = requests.get(url=url, headers=headers)

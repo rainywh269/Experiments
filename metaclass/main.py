@@ -11,9 +11,13 @@ class Meta(type):
 class B(object):
     keywords = ('0',)
     __metaclass__= Meta
+
+class C(B):
+    pass
     
 def main():
-    print B().keywords
+    print C().keywords
+    #print B().keywords
 
 if __name__ == '__main__':
     main()
