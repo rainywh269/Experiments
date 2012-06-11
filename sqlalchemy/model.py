@@ -4,10 +4,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy import MetaData,Table
-from sqlalchemy.orm import mapper, sessionmaker
+from sqlalchemy.orm import mapper, sessionmaker, composite
 from sqlalchemy.ext.sqlsoup import SqlSoup
 
 engine = create_engine("mysql://root:intelkamd@localhost/test_wooparadog9010")
+#engine = create_engine("sqlite:///:memory:")
 Base = declarative_base(engine)
 
 class NameMixIn(DeclarativeMeta):
@@ -36,6 +37,7 @@ def get_session():
     return session
 
 if __name__ == '__main__':
+    Base.metadata.create_all()
     session = get_session2()
     import ipdb
     ipdb.set_trace()

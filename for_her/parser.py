@@ -41,12 +41,12 @@ def main():
             ps = it.xpath('.//p/text()')
             cat = parser.xpath('//div[@id="divStayTopRight"]//font[@class="header_s"]/a/text()')
             cat = ','.join(cat) or 'None'
-            cat = ftoj(cat).replace(":","：".decode("utf8"))
+            cat = ftoj(cat).replace(':', '：'.decode('utf8'))
 
             ps = filter(unicode, ps)
             ps = filter(lambda x:x.strip(), ps)
 
-            ps.insert(0,'【概述】'.decode('utf8'))
+            ps.insert(0, '【概述】'.decode('utf8'))
             ps = ''.join(ps)
 
             # 分段的..她不要
@@ -57,13 +57,15 @@ def main():
             #        continue
             #    a[current_key] += ftoj(i)
 
-            a['title'] = ftoj(title).replace(":","：".decode("utf8"))
-            a['alias'] = ftoj(alias).replace(":","：".decode("utf8"))
-            a['content'] = ftoj(ps).replace(":","：".decode("utf8")).replace("\n","").replace("\r",'')
+            a['title'] = ftoj(title).replace(':', '：'.decode('utf8'))
+            a['alias'] = ftoj(alias).replace(':', '：'.decode('utf8'))
+            a['content'] = ftoj(ps).replace(':', '：'.decode('utf8')).replace('\n', '').replace('\r', '')
 
             cats[cat].append(a)
             if cat == 'None':
-                print cat, file_path
+                print 'no cat', file_path
+            if title == 'None':
+                print 'no title', file_path
     return cats
 
 def str_(cats):
@@ -71,13 +73,16 @@ def str_(cats):
     result = []
     for k, v in cats.items():
         result.append( str(i) + ':')
-        result.append(' '*4 + k +':')
+        result.append(' '*4+ 'chapter_title : '  + k)
+        result.append(' '*4 +    'overview : ')
+        result.append(' '*4 +    'diseases : ')
         for disease in v:
             result.append( ' '*8 + '%s : %s' %(disease['title'], disease['content']))
         i += 1
 
+    #print('\n'.join(result).encode('utf8'))
     with open('result', 'w') as f:
-        f.write("\n".join(result).encode("utf8"))
+        f.write('\n'.join(result).encode('utf8'))
 
 
 
