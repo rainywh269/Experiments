@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import nltk
-import matplotlib
+#import matplotlib
 from nltk.book import text1
 
 freq=nltk.FreqDist(text1)
