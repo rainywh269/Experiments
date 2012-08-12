@@ -38,7 +38,7 @@ DB_FILE = path.join(current_path, DB_FILENAME)
 
 SMTP = 'smtp.mailgun.org'
 SMTP_USERNAME = 'postmaster@wooparadog.mailgun.org'
-SMTP_PASSWORD = '2zcpxlnii6x0'
+SMTP_PASSWORD = 'thisisnotanoption'
 SENDER_MAIL = SMTP_USERNAME
 
 USER = "wooparadog"
