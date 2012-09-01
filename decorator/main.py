@@ -20,7 +20,7 @@ def decorator(f):
 
 @decorator
 def test(arg1, arg2):
-    print test1
+    print "!", test1
 
 
 def main():

@@ -10,6 +10,7 @@ Created on
 '''
 
 def func_1(func):
+    print "!!!", func.__name__
     def _(a):
         print a,'this'
     return _
