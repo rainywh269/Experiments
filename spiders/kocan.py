@@ -75,6 +75,8 @@ def main():
                         with open('imgs/%s' % filename, 'wb') as f:
                             f.write(req.content)
                         print "OK", url
+                    else:
+                        print "fail" 
                     Post.commit()
                 except:
                     Post.rollback()
