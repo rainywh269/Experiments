@@ -61,11 +61,12 @@ def handle_img_url(url, name=None, folder="imgs"):
                     f.write(req.content)
                 print "OK", url
                 Post.commit()
-            else:
-                print "fail". url
-                Post.rollback()
+                return True
         except:
-            Post.rollback()
+            pass
+
+    print "fail". url
+    Post.rollback()
     
 def parse_konchan():
     url = "http://konachan.com/post/atom"
