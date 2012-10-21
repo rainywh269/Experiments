@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import re
 import sqlite3
 import requests
 from os import path
 from lxml import etree
 from urllib2 import unquote
 
-debug = False
+debug = 0
 
-url = "http://konachan.com/post/atom"
 proxies = {
         "http": "10.8.0.1:8118",
         "https": "10.8.0.1:8118",
@@ -35,7 +35,7 @@ class Post(object):
         cls.conn.commit()
 
     @classmethod
-    def commit(cls):
+    def rollback(cls):
         cls.conn.rollback()
 
     @classmethod
@@ -50,8 +50,25 @@ class Post(object):
             print err, url
             return False
 
-def main():
-    global url
+def handle_img_url(url, name=None, folder="imgs"):
+    id = name or url
+    if Post.insert(id):
+        try:
+            req = requests.get(url=url)
+            if req.status_code == requests.codes.ok:
+                filename = unquote(path.split(url)[-1])
+                with open('%s/%s' % (folder, filename), 'wb') as f:
+                    f.write(req.content)
+                print "OK", url
+                Post.commit()
+            else:
+                print "fail". url
+                Post.rollback()
+        except:
+            Post.rollback()
+    
+def parse_konchan():
+    url = "http://konachan.com/post/atom"
     if debug:
         text = open("atom").read()
         link = etree.XML(text)
@@ -67,19 +84,29 @@ def main():
         jpgs = tree.xpath('//a[@id="highres"]/@href')
         result = pngs or jpgs
         for url in result:
-            if Post.insert(url):
-                try:
-                    req = requests.get(url=url)
-                    if req.status_code == requests.codes.ok:
-                        filename = unquote(path.split(url)[-1])
-                        with open('imgs/%s' % filename, 'wb') as f:
-                            f.write(req.content)
-                        print "OK", url
-                    else:
-                        print "fail" 
-                    Post.commit()
-                except:
-                    Post.rollback()
+            handle_img_url(url)
+
+def parse_melc():
+    img_finder = re.compile('src="(.*)"')
+    url = "http://melc.tumblr.com/rss"
+    if debug:
+        text = open("atom").read()
+        link = etree.XML(text)
+    else:
+        req = requests.get(url=url, proxies=proxies)
+        link = etree.XML(req.text.encode('utf8'))
+
+    links = link.xpath('//item/description/text()') 
+
+    for link in links:
+        urls = img_finder.findall(link)
+        for url in urls:
+            url = url.replace("_500", "_1280")
+            handle_img_url(url, folder="melc") 
+
+def main():
+    parse_konchan()
+    parse_melc()
 
 if __name__ == '__main__':
     main()
