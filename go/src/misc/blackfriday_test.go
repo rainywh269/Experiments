@@ -1,11 +1,10 @@
 package main
 
 import (
-    "fmt"
 )
 
 func main(){
-    var f string
-    f = "sadf"
+    a := []int{5,4,3,2,1}
+    a.Remove(4)
 }
 
