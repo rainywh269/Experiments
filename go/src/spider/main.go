@@ -67,8 +67,10 @@ func melc_channel_worker(n list.Element){
     _, err = os.Stat(filename)
     _, ok = err.(*os.PathError)
     if ok{
-        data := downloader.Download(url)
-        ioutil.WriteFile(filename, data, 0600)
+        data, err := downloader.Download(url)
+        if err{
+            ioutil.WriteFile(filename, data, 0600)
+        }
     }else{
         fmt.Println("Already downloaded")
     }
