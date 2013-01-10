@@ -1,7 +1,7 @@
 package main
 
 import(
-    "downloader"
+    dwler "downloader"
 )
 
 type Parser interface {
@@ -28,6 +28,11 @@ func MakeDownloaderWorkers(worker_factory func() Downloader) chan *Downloader{
 }
 
 func ProxyDownloaderFactory() Downloader{
-    downloader := downloader.MakePDownloader(HTTP_PROXY)
+    downloader := dwler.MakePDownloader(HTTP_PROXY)
+    return downloader
+}
+
+func DirectDownloaderFactory() Downloader{
+    downloader := dwler.DDownloader{}
     return downloader
 }

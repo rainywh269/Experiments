@@ -25,7 +25,22 @@ if not path.exists(DB_FILE):
     cursor.execute('''create table record(
     url text unique not null)''')
     conn.close()
-    
+
+def retry(num=3):
+    def _(f):
+        def __(*args, **kwds):
+            retry = num
+            while(retry>0):
+                try:
+                    f(*args, **kwds)
+                    break
+                except Exception as err:
+                    print err
+                    retry -= 1
+        return __
+    return _
+
+
 class Post(object):
     conn = sqlite3.connect(DB_FILE)
     cursor = conn.cursor()
@@ -67,7 +82,8 @@ def handle_img_url(url, name=None, folder="imgs"):
 
     print "fail". url
     Post.rollback()
-    
+
+@retry(3)
 def parse_konchan():
     url = "http://konachan.com/post/atom"
     if debug:
@@ -87,6 +103,7 @@ def parse_konchan():
         for url in result:
             handle_img_url(url)
 
+@retry(3)
 def parse_melc():
     img_finder = re.compile('src="(.*)"')
     url = "http://melc.tumblr.com/rss"
@@ -106,8 +123,8 @@ def parse_melc():
             handle_img_url(url, folder="melc") 
 
 def main():
-    parse_konchan()
     parse_melc()
+    parse_konchan()
 
 if __name__ == '__main__':
     main()
