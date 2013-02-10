@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import tornado.web 
+import tornado.web
 import tornado.httpserver
 from tornado.ioloop import IOLoop
 import tornado.websocket
@@ -28,7 +28,6 @@ app = tornado.web.Application([
     ('/i.*',Index),
     ('/',I),
     ], debug=True )
-
 
 def main():
     server = tornado.httpserver.HTTPServer(app)

@@ -5,17 +5,22 @@ import(
 
 var worker_pool chan *Downloader
 
+
 func main(){
-    td := MakeTumblrDownloader("fantastic", "_500", "http://pornisfantastic.tumblr.com/rss")
-    url_chan, content_chan := td.GetTargetUrlChannel()
+    tumblr_sources := parse_tumblr_sources()
     worker_pool = MakeDownloaderWorkers(DirectDownloaderFactory)
-    for {
-        url, err := <-url_chan
-        if !err {
-            break
+    for _, tumblr_source := range tumblr_sources{
+        td := MakeTumblrDownloader(tumblr_source.Name, tumblr_source.Suffix, tumblr_source.Url)
+        url_chan, content_chan := td.GetTargetUrlChannel()
+        for {
+            url, err := <-url_chan
+            if !err {
+                break
+            }
+            go download(url, content_chan, url_chan)
         }
-        go download(url, content_chan, url_chan)
     }
+
 }
 
 func download(url string, content_chan chan Content, url_chan chan string){

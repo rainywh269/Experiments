@@ -9,13 +9,24 @@ import(
     "regexp"
     "strings"
     "io/ioutil"
+    //"encoding/json"
 )
+
 type worker func(n list.Element)
 var ch chan list.Element
 var melc_worker chan worker
 
+func parse_config(){
+    dir, _ := os.Getwd()
+    config_file := path.Join(dir, "config.json")
+    config, _ := ioutil.ReadFile(config_file)
+    fmt.Println(config)
+
+}
+
 func main(){
-    download_melc()
+    parse_config()
+    //download_tumblr()
 }
 
 func getWorkers(){
@@ -30,8 +41,8 @@ func download_urls(urls *list.List){
     }
 }
 
-func download_melc(){
-    ch = make(chan list.Element) 
+func download_tumblr(){
+    ch = make(chan list.Element)
     melc_worker = make(chan worker)
     url := "http://melc.tumblr.com/rss"
     body := string(downloader.DownloadWithProxy(url))
@@ -56,7 +67,7 @@ func melc_channel_worker(n list.Element){
     _, ok := err.(*os.PathError)
     if ok{
         fmt.Println("make dir", dir)
-        os.MkdirAll(dir, 0775) 
+        os.MkdirAll(dir, 0775)
     }
 
     filename := path.Base(url)
@@ -89,4 +100,4 @@ func parse_melc(body string) *list.List{
         results.PushBack(url)
     }
     return results
-} 
+}
