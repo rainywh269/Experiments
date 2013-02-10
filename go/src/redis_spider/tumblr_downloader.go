@@ -125,7 +125,6 @@ func (self *TumblrDownloader) check_rss(){
         finder, _ := regexp.Compile(`src="(.*?)"`)
         body := string(p_downloader.Download(self.rss_addr))
         rslts := finder.FindAllStringSubmatch(body, -1)
-        log.Println(">>>>>>>>>>>", self.name, len(rslts))
         for _, v := range rslts{
             url := v[1]
             go self.ProcessUrl(url)
