@@ -1,7 +1,7 @@
 package downloader
 
 import(
-    "fmt"
+    "log"
     "net/http"
     "net/url"
     "io/ioutil"
@@ -29,15 +29,17 @@ func ProxyDownloader(proxyUrl string) http.Client{
 }
 
 func (self PDownloader) Download(url string)([]byte){
+    log.Printf("Downloading with proxy : %s", url)
     rst, err := self.client.Get(url)
     if err != nil{
-        fmt.Println(err)
+        log.Println(err)
         return []byte{}
     }
     data, err := ioutil.ReadAll(rst.Body)
     if err != nil{
-        fmt.Println(err)
+        log.Println(err)
         return []byte{}
     }
+    log.Printf("Downloading with proxy Completed : %s", url)
     return data
 }

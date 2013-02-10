@@ -9,10 +9,12 @@ import (
     "fmt"
     "encoding/json"
 )
+const CONCURENT_DOWNLOADS = 4
 
 const REDIS_NETWORK = "unix"
 const REDIS_LOCATION = "/tmp/redis.sock"
-const CONCURENT_DOWNLOADS = 4
+
+const SQLITE_FILE = "data.sqlite3"
 
 const HTTP_PROXY = "http://10.8.0.1:8118"
 const CHECK_INTERVAL = time.Minute * 1

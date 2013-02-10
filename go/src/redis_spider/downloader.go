@@ -5,7 +5,7 @@ import(
 )
 
 type Parser interface {
-    GetTargetUrlChannel() chan string
+    Start() chan string
     AfterFinished(url string)
 }
 
@@ -13,9 +13,13 @@ type Downloader interface{
     Download(url string) []byte
 }
 
+type ImgResource interface{
+    GetUrl() string
+}
+
 type Content struct{
     Content []byte
-    Url string
+    Resource ImgResource
 }
 
 func MakeDownloaderWorkers(worker_factory func() Downloader) chan *Downloader{
@@ -35,4 +39,21 @@ func ProxyDownloaderFactory() Downloader{
 func DirectDownloaderFactory() Downloader{
     downloader := dwler.DDownloader{}
     return downloader
+}
+
+func Download_raw(img_resource ImgResource, td TumblrDownloader){
+    worker := *(<- worker_pool)
+    defer func(){
+        worker_pool <- &worker
+    }()
+    content := worker.Download(img_resource.GetUrl())
+    if len(content) > 0{
+        result := Content{
+            Content:content,
+            Resource:img_resource,
+        }
+        td.ContenChan <- result
+    }else{
+        td.UrlChan <- img_resource
+    }
 }
