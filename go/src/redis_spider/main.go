@@ -5,6 +5,14 @@ import(
 
 var worker_pool chan *Downloader
 var exit_signal chan int
+/*
+TODO: 
+
+    1. refactor config, try using other aproach rather than a simple json
+    2. specify proxy by using config.
+    3. ...
+*/
+
 
 func main(){
     recorder := CreateSqliteRecorder(SQLITE_FILE)
