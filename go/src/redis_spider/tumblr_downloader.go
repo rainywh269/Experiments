@@ -122,7 +122,7 @@ func (self *TumblrDownloader) check_rss(){
     p_downloader := ProxyDownloaderFactory()
     for {
         log.Printf("Checking Rss %s", self.rss_addr)
-        finder, _ := regexp.Compile(`src="(.*?)"`)
+        finder, _ := regexp.Compile(`img *?src="(.*?)"`)
         body := string(p_downloader.Download(self.rss_addr))
         rslts := finder.FindAllStringSubmatch(body, -1)
         for _, v := range rslts{
