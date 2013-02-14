@@ -1,13 +1,12 @@
 package main
 
 import (
-    "time"
     "os"
     "log"
+    "time"
     "path"
-    "io"
-    "fmt"
     "encoding/json"
+    "io/ioutil"
 )
 const CONCURENT_DOWNLOADS = 4
 
@@ -16,8 +15,6 @@ const REDIS_LOCATION = "/tmp/redis.sock"
 
 const SQLITE_FILE = "data.sqlite3"
 
-const HTTP_PROXY = "http://10.8.0.1:8118"
-const CHECK_INTERVAL = time.Minute * 1
 const SET_NAME = "url_set"
 
 type TumblrSource struct{
@@ -26,23 +23,30 @@ type TumblrSource struct{
     Url string
 }
 
-func parse_tumblr_sources() []TumblrSource{
-    sources := make([]TumblrSource, 0)
+type config_struct struct{
+    Proxy string
+    CheckInterval time.Duration
+    Recorder string
+    UseProxy bool
+    TumblrSources []TumblrSource
+}
+
+var Config config_struct
+
+func ParseConfig(){
     dir, _ := os.Getwd()
     config_file := path.Join(dir, "config.json")
     config, _ := os.Open(config_file)
-    config_decoder := json.NewDecoder(config)
-    fmt.Println("Parsing tumblr sources...")
-    for {
-        var m TumblrSource
-        if err := config_decoder.Decode(&m); err == io.EOF {
-            break
-        } else if err != nil {
-            log.Fatal(err)
-        }
-        sources = append(sources, m)
-        fmt.Printf("Add tumblr source, %s: %s %s\n", m.Name, m.Suffix, m.Url)
+    raw_config, err := ioutil.ReadAll(config)
+    if err == nil{
+        err = json.Unmarshal(raw_config, &Config)
+        log.Printf("Proxy:\t\t %s", Config.Proxy)
+        log.Printf("Check Interval:\t %s", Config.CheckInterval)
+        log.Printf("Tumblr Sources:\t %s", Config.TumblrSources)
+        return
     }
-    return sources
+    if err != nil{
+        log.Fatal("Failed To Load Config File")
+    }
 }
 

@@ -22,17 +22,27 @@ type Content struct{
     Resource ImgResource
 }
 
-func MakeDownloaderWorkers(worker_factory func() Downloader) chan *Downloader{
-    worker_pool := make(chan *Downloader, CONCURENT_DOWNLOADS)
+var worker_pool chan *Downloader
+
+func MakeDownloaderWorkers() {
+    var worker_factory func() Downloader
+    switch Config.UseProxy{
+    case true:
+        worker_factory = ProxyDownloaderFactory
+        break
+    case false:
+        worker_factory = DirectDownloaderFactory
+        break
+    }
+    worker_pool = make(chan *Downloader, CONCURENT_DOWNLOADS)
     for i:=0;i<CONCURENT_DOWNLOADS;i++{
         downloader := worker_factory()
         worker_pool <- &downloader
     }
-    return worker_pool
 }
 
 func ProxyDownloaderFactory() Downloader{
-    downloader := dwler.MakePDownloader(HTTP_PROXY)
+    downloader := dwler.MakePDownloader(Config.Proxy)
     return downloader
 }
 

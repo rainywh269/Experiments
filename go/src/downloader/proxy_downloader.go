@@ -29,17 +29,17 @@ func ProxyDownloader(proxyUrl string) http.Client{
 }
 
 func (self PDownloader) Download(url string)([]byte){
-    log.Printf("Downloading with proxy : %s", url)
+    //log.Printf("Downloading with proxy : %s", url)
     rst, err := self.client.Get(url)
     if err != nil{
-        log.Println(err)
+        log.Println("Connect Error: ", err)
         return []byte{}
     }
     data, err := ioutil.ReadAll(rst.Body)
     if err != nil{
-        log.Println(err)
+        log.Println("Response Error: ", err)
         return []byte{}
     }
-    log.Printf("Downloading with proxy Completed : %s", url)
+    //log.Printf("Downloading with proxy Completed : %s", url)
     return data
 }

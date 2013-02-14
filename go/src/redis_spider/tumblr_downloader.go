@@ -89,7 +89,7 @@ func (self *TumblrDownloader) AfterFinished(){
         }else{
             ioutil.WriteFile(filename, content.Content, 0600)
             self.recorder.MarkAsFinished(id)
-            log.Printf("New Download Finished : %s", content.Resource.(*TumblrImg).id)
+            log.Printf("New Download Saved : %s", filename)
         }
     }
 }
@@ -114,7 +114,7 @@ func (self *TumblrDownloader) ProcessUrl(url string){
         }
         self.AddUrl(&tumblr_img)
     }else{
-        log.Printf("Already Downloaded : %s", id)
+        //log.Printf("Already Downloaded : %s", id)
     }
 }
 
@@ -129,7 +129,7 @@ func (self *TumblrDownloader) check_rss(){
             url := v[1]
             go self.ProcessUrl(url)
         }
-        time.Sleep(CHECK_INTERVAL)
+        time.Sleep(time.Minute * Config.CheckInterval)
     }
 }
 
