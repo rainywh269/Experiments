@@ -22,7 +22,7 @@ type Content struct{
     Resource ImgResource
 }
 
-var worker_pool chan *Downloader
+var DownloadWorker chan *Downloader
 
 func MakeDownloaderWorkers() {
     var worker_factory func() Downloader
@@ -34,10 +34,10 @@ func MakeDownloaderWorkers() {
         worker_factory = DirectDownloaderFactory
         break
     }
-    worker_pool = make(chan *Downloader, CONCURENT_DOWNLOADS)
+    DownloadWorker = make(chan *Downloader, CONCURENT_DOWNLOADS)
     for i:=0;i<CONCURENT_DOWNLOADS;i++{
         downloader := worker_factory()
-        worker_pool <- &downloader
+        DownloadWorker <- &downloader
     }
 }
 
@@ -52,9 +52,9 @@ func DirectDownloaderFactory() Downloader{
 }
 
 func Download_raw(img_resource ImgResource, td TumblrDownloader){
-    worker := *(<- worker_pool)
+    worker := *(<- DownloadWorker)
     defer func(){
-        worker_pool <- &worker
+        DownloadWorker <- &worker
     }()
     content := worker.Download(img_resource.GetUrl())
     if len(content) > 0{

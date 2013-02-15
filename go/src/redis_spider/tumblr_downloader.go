@@ -66,7 +66,7 @@ func (self *TumblrDownloader) get_img_id(url string) string{
 
 func (self *TumblrDownloader) AfterFinished(){
     dir, _ := os.Getwd()
-    dir = path.Join(dir, self.name)
+    dir = path.Join(dir, "Downloads", self.name)
     _, err := os.Stat(dir)
     _, ok := err.(*os.PathError)
     if ok{
@@ -79,7 +79,7 @@ func (self *TumblrDownloader) AfterFinished(){
         filename := path.Base(content.Resource.GetUrl())
         filename = path.Join(dir, filename)
         if strings.Contains(string(content.Content), "AccessDenied"){
-            log.Printf("Access Denied Error, Try Use Original Link : %s", content.Resource.GetUrl())
+            log.Printf("Access Denied Error, Try Use Original Link : %s", content.Resource.(*TumblrImg).url)
             self.AddUrl(&TumblrImg{
                 id:id,
                 url:content.Resource.(*TumblrImg).url,
@@ -118,12 +118,20 @@ func (self *TumblrDownloader) ProcessUrl(url string){
     }
 }
 
+func (self *TumblrDownloader) download_rss() string{
+    p_downloader := *(<- DownloadWorker)
+    defer func(){
+        DownloadWorker <- &p_downloader
+    }()
+    return string(p_downloader.Download(self.rss_addr))
+
+}
+
 func (self *TumblrDownloader) check_rss(){
-    p_downloader := ProxyDownloaderFactory()
     for {
         log.Printf("Checking Rss %s", self.rss_addr)
         finder, _ := regexp.Compile(`img *?src="(.*?)"`)
-        body := string(p_downloader.Download(self.rss_addr))
+        body := self.download_rss()
         rslts := finder.FindAllStringSubmatch(body, -1)
         for _, v := range rslts{
             url := v[1]
