@@ -124,16 +124,21 @@ func (self *TumblrDownloader) download_rss() string{
         DownloadWorker <- &p_downloader
     }()
     return string(p_downloader.Download(self.rss_addr))
+}
 
+func (self *TumblrDownloader) get_image_list() [][]string{
+    finder, _ := regexp.Compile(`img *?src="(.*?)"`)
+    text := self.download_rss()
+    rslts := finder.FindAllStringSubmatch(text, -1)
+    return rslts
 }
 
 func (self *TumblrDownloader) check_rss(){
     for {
-        log.Printf("Checking Rss %s", self.rss_addr)
-        finder, _ := regexp.Compile(`img *?src="(.*?)"`)
-        body := self.download_rss()
-        rslts := finder.FindAllStringSubmatch(body, -1)
-        for _, v := range rslts{
+        image_list := self.get_image_list()
+        log.Printf("Getting Rss %s: getted %d", self.rss_addr, len(image_list))
+        //len(rslts)
+        for _, v := range image_list{
             url := v[1]
             go self.ProcessUrl(url)
         }

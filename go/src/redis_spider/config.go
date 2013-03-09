@@ -29,6 +29,7 @@ type config_struct struct{
     Recorder string
     UseProxy bool
     TumblrSources []TumblrSource
+    Timeout int64
 }
 
 var Config config_struct

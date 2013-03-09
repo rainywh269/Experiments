@@ -11,25 +11,24 @@ type PDownloader struct{
     client *http.Client
 }
 
-func MakePDownloader(proxy_url string) PDownloader{
-    client := GetDoubanProxyClient(proxy_url)
+func MakePDownloader(proxy_url string, timeout int64) PDownloader{
+    client := ProxyDownloader(proxy_url, timeout)
     return PDownloader{&client}
 }
 
-func GetDoubanProxyClient(url string) http.Client{
-    return ProxyDownloader(url)
-}
 
-func ProxyDownloader(proxyUrl string) http.Client{
+func ProxyDownloader(proxyUrl string, timeout int64) http.Client{
     url, _ := url.Parse(proxyUrl)
     proxy := http.ProxyURL(url)
-    tr := http.Transport{Proxy:proxy}
+    tr := http.Transport{
+        Proxy:proxy,
+        Dial: timeoutDialler(timeout),
+    }
     client := http.Client{Transport:&tr}
     return client
 }
 
 func (self PDownloader) Download(url string)([]byte){
-    //log.Printf("Downloading with proxy : %s", url)
     rst, err := self.client.Get(url)
     if err != nil{
         log.Println("Connect Error: ", err)
@@ -40,6 +39,5 @@ func (self PDownloader) Download(url string)([]byte){
         log.Println("Response Error: ", err)
         return []byte{}
     }
-    //log.Printf("Downloading with proxy Completed : %s", url)
     return data
 }

@@ -42,17 +42,17 @@ func MakeDownloaderWorkers() {
 }
 
 func ProxyDownloaderFactory() Downloader{
-    downloader := dwler.MakePDownloader(Config.Proxy)
+    downloader := dwler.MakePDownloader(Config.Proxy, Config.Timeout)
     return downloader
 }
 
 func DirectDownloaderFactory() Downloader{
-    downloader := dwler.DDownloader{}
+    downloader := dwler.MakeDirectDownloader(Config.Timeout)
     return downloader
 }
 
 func Download_raw(img_resource ImgResource, td TumblrDownloader){
-    worker := *(<- DownloadWorker)
+    worker := *(<-DownloadWorker)
     defer func(){
         DownloadWorker <- &worker
     }()

@@ -17,9 +17,12 @@ def get_track_id(track_id):
     r= s.post(url="http://theoden.intra.douban.com:8001/data", data={"track_id":track_id, "dtype":"track"})
     return r.content
 
-if __name__ == '__main__':
-    for i in finder.findall(get_track_id(642466)):
-        content =  get_user_id(i)
-        ids = txt_wrap_by_all('id:','</br',content)
-        print ids
+#if __name__ == '__main__':
+#    for i in finder.findall(get_track_id(642466)):
+#        content =  get_user_id(i)
+#        ids = txt_wrap_by_all('id:','</br',content)
+#        print ids
 
+s.post(url="http://movie.movie-zeta.douban.com/j/ticket/jinyi/?dfasd=df", files={
+    "file": open("main.py")
+    })
