@@ -8,6 +8,7 @@ import(
     "strings"
     "regexp"
     "time"
+    "errors"
 )
 
 
@@ -59,9 +60,14 @@ func MakeTumblrDownloader(name, rss_img_size, rss_addr string, recorder Recorder
     return downloader
 }
 
-func (self *TumblrDownloader) get_img_id(url string) string{
+func (self *TumblrDownloader) get_img_id(url string) (string, error){
     filename := path.Base(url)
-    return self.img_id_finder.FindStringSubmatch(filename)[1]
+    matches := self.img_id_finder.FindStringSubmatch(filename)
+    if len(matches) > 0{
+        return matches[1], nil
+    }
+    log.Printf("WARNING: Fail to Match id for %s", url)
+    return "", errors.New("Fail to Match Id: " + url)
 }
 
 func (self *TumblrDownloader) AfterFinished(){
@@ -75,21 +81,23 @@ func (self *TumblrDownloader) AfterFinished(){
     }
     for {
         content := <- self.ContenChan
-        id := self.get_img_id(content.Resource.GetUrl())
-        filename := path.Base(content.Resource.GetUrl())
-        filename = path.Join(dir, filename)
-        if strings.Contains(string(content.Content), "AccessDenied"){
-            log.Printf("Access Denied Error, Try Use Original Link : %s", content.Resource.(*TumblrImg).url)
-            self.AddUrl(&TumblrImg{
-                id:id,
-                url:content.Resource.(*TumblrImg).url,
-                state:OriginalResolution,
-                rss_img_size:self.rss_img_size,
-            })
-        }else{
-            ioutil.WriteFile(filename, content.Content, 0600)
-            self.recorder.MarkAsFinished(id)
-            log.Printf("New Download Saved : %s", filename)
+        id, err := self.get_img_id(content.Resource.GetUrl())
+        if err == nil{
+            filename := path.Base(content.Resource.GetUrl())
+            filename = path.Join(dir, filename)
+            if strings.Contains(string(content.Content), "AccessDenied"){
+                log.Printf("Access Denied Error, Try Use Original Link : %s", content.Resource.(*TumblrImg).url)
+                self.AddUrl(&TumblrImg{
+                    id:id,
+                    url:content.Resource.(*TumblrImg).url,
+                    state:OriginalResolution,
+                    rss_img_size:self.rss_img_size,
+                })
+            }else{
+                ioutil.WriteFile(filename, content.Content, 0600)
+                self.recorder.MarkAsFinished(id)
+                log.Printf("New Download Saved : %s", filename)
+            }
         }
     }
 }
@@ -104,17 +112,19 @@ func (self *TumblrDownloader) GetWaitingUrl() (bool, string){
 }
 
 func (self *TumblrDownloader) ProcessUrl(url string){
-    id := self.get_img_id(url)
-    if !self.recorder.HasFinished(id){
-        tumblr_img := TumblrImg{
-            id:id,
-            url:url,
-            state:FullResolution,
-            rss_img_size:self.rss_img_size,
+    id, err := self.get_img_id(url)
+    if err == nil {
+        if !self.recorder.HasFinished(id){
+            tumblr_img := TumblrImg{
+                id:id,
+                url:url,
+                state:FullResolution,
+                rss_img_size:self.rss_img_size,
+            }
+            self.AddUrl(&tumblr_img)
+        }else{
+            //log.Printf("Already Downloaded : %s", id)
         }
-        self.AddUrl(&tumblr_img)
-    }else{
-        //log.Printf("Already Downloaded : %s", id)
     }
 }
 

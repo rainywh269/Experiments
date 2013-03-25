@@ -1,5 +1,6 @@
 package downloader
 
+/*
 import(
     "fmt"
     "testing"
@@ -11,3 +12,4 @@ func TestDownloadWithProxy(t *testing.T){
     fmt.Println(string(data))
 }
 
+*/
