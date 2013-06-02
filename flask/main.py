@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import urllib
 from flask import Flask, url_for, request
 import time
 
+import re
 app = Flask(__name__)
 
 @app.before_request
@@ -17,6 +19,10 @@ def end(response):
 
 @app.route("/")
 def hello():
+    page = urllib.urlopen("http://movie.douban.com/subject/10574468/mobile")
+    found  =re.find_all('name="ck" value="(.*?)"', page)
+    print found
+
     return str(request.start_time)
     return "Hello World!"
 

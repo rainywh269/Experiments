@@ -1,0 +1,62 @@
+/*
+ * style.css
+ * Copyright (C) 2013 wooparadog
+ *
+ * Distributed under terms of the MIT license.
+ */
+
+a{
+    color: #000;
+}
+
+
+body {
+	background: white;
+	color: black;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+ul li {
+    list-style: none;
+}
+
+#sections{
+    width: 1000px;
+    margin: 20px auto;
+}
+
+.sub-section{
+    width:495px;
+    display:inline-block;
+    padding: 20px 0;
+    border-bottom: dashed 1px #bbbbbb;
+}
+.section-hd{
+    background: #eeeeee;
+    font-size:24px;
+}
+.sub-section .icon{
+    width: 50px;
+    display: inline-block;
+}
+.sub-section .content{
+    display:inline-block;
+    width: 350px;
+    margin: 0 0 0 20px;
+}
+.sub-section .content .content-hd a{
+    color: #333;
+    text-decoration: none;
+}
+    
+.sub-section .content .content-hd a:hover{
+    text-decoration: underline;
+}
+.sub-section .content .content-hd a{
+    color: #333;
+    text-decoration: none;
+}
+
