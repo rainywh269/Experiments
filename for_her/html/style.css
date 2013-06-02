@@ -26,6 +26,8 @@ ul li {
 #sections{
     width: 1000px;
     margin: 20px auto;
+    padding: 10px;
+    border: 1px solid #eee;
 }
 
 .sub-section{
@@ -35,8 +37,8 @@ ul li {
     border-bottom: dashed 1px #bbbbbb;
 }
 .section-hd{
-    background: #eeeeee;
     font-size:24px;
+    border-bottom: 1px solid;
 }
 .sub-section .icon{
     width: 50px;
@@ -46,6 +48,7 @@ ul li {
     display:inline-block;
     width: 350px;
     margin: 0 0 0 20px;
+    vertical-align: top;
 }
 .sub-section .content .content-hd a{
     color: #333;
@@ -59,4 +62,12 @@ ul li {
     color: #333;
     text-decoration: none;
 }
-
+#post-form {
+    display:none;
+    position: absolute;
+    padding: 5px;
+    background: #eee;
+}
+#post-form #submit{
+    float:right;
+}
